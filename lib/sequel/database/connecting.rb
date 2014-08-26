@@ -90,7 +90,7 @@ module Sequel
       else
         file = scheme
       end
-      
+
       unless obj = Sequel.synchronize{map[scheme]}
         # attempt to load the adapter file
         begin
