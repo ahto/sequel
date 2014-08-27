@@ -11,7 +11,7 @@ module Sequel
         db.extend_datasets Sequel::Crate::DatasetMethods
 
         #table names in crate are always downcased unless you double-quote them. so Table gets table, but "Table" remains Table
-        #sequel will quote table names so dont
+        #sequel will quote table names so dont do anything to it
         db.identifier_input_method = nil
 
         Jdbc::Crate::Driver::CrateDriver
@@ -51,6 +51,17 @@ module Sequel
         def type_literal_generic_integer(column)
           :integer
         end
+
+        #Sequel error wrapper will swallow exceptions without this
+        def database_error_classes
+          [Java::IoCrateActionSql::SQLActionException]
+        end
+
+        #this isn't called but needed so that sequel will do schema parsing
+        #sequel asks: respond_to?(:schema_parse_table, true)
+        def schema_parse_table(table_name, opts)
+        end
+
 
 
       end

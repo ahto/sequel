@@ -105,8 +105,7 @@ module Sequel
   # <tt>Sequel::Error</tt> or a subclass.  Returns an instance of +klass+ with
   # the message and backtrace of +exception+.
   def self.convert_exception_class(exception, klass)
-    puts "Exception class: #{exception.class.to_s}" #TODO: remove me
-    return exception if exception.is_a?(klass) || exception.is_a?(Java::IoCrateActionSql::SQLActionException)
+    return exception if exception.is_a?(klass)
     e = klass.new("#{exception.class}: #{exception.message}")
     e.wrapped_exception = exception
     e.set_backtrace(exception.backtrace)
