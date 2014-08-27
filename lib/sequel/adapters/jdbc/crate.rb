@@ -65,6 +65,7 @@ module Sequel
         #crate doesnt support transactions
         def begin_transaction(*args); end
         def commit_transaction(*args); end
+        def rollback_transaction(*args); end
 
 
       end
