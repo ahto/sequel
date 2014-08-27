@@ -62,6 +62,9 @@ module Sequel
         def schema_parse_table(table_name, opts)
         end
 
+        #crate doesnt support transactions
+        def begin_transaction(*args); end
+        def commit_transaction(*args); end
 
 
       end
