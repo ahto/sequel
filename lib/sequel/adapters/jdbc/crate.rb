@@ -9,7 +9,11 @@ module Sequel
       DATABASE_SETUP[:crate] = proc do |db|
         db.extend(Sequel::JDBC::Crate::DatabaseMethods)
         db.extend_datasets Sequel::Crate::DatasetMethods
+
+        #table names in crate are always downcased unless you double-quote them. so Table gets table, but "Table" remains Table
+        #sequel will quote table names so dont
         db.identifier_input_method = nil
+
         Jdbc::Crate::Driver::CrateDriver
       end
     end
@@ -20,9 +24,35 @@ module Sequel
       # Database instance methods for Crate databases accessed via JDBC.
       module DatabaseMethods
 
-        def database_type
-          :crate
+        # # there is no AUTOINCREMENT
+        def serial_primary_key_options
+          {:primary_key => true, :type=>:String}
         end
+
+
+        #only one string type called 'string'
+        def type_literal_generic_string(column)
+          :string
+        end
+
+        #crate supports integer, long, short, double, float and byte
+        def type_literal_generic_numeric(column)
+          :double
+        end
+
+        def type_literal_generic_float(column)
+          :double
+        end
+
+        def type_literal_generic_bignum(column)
+          :integer
+        end
+
+        def type_literal_generic_integer(column)
+          :integer
+        end
+
+
       end
 
       module DatasetMethods
